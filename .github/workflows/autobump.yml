@@ -10,6 +10,9 @@ on:
   schedule:
     # Every day at 18:40 UTC
     - cron: 40 18 * * *
+  # Kick a bump without waiting for the cron — useful right after a release, and
+  # the only way to exercise this workflow's credentials on demand.
+  workflow_dispatch:
 
 permissions: {}
 
