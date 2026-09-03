@@ -9,6 +9,12 @@ on:
         required: true
       head_sha:
         description: Expected pull request head commit SHA (optional)
+  # Closes the release loop: when test-bot goes green on an autobump PR, publish
+  # it without waiting for a human to type the number. The job guard below keeps
+  # this to `bump-*` branches, so a hand-written PR still merges by hand.
+  workflow_run:
+    workflows: ["brew test-bot"]
+    types: [completed]
 
 permissions: {}
 
@@ -19,6 +25,11 @@ defaults:
 jobs:
   pr-pull:
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'pull_request' &&
+       startsWith(github.event.workflow_run.head_branch, 'bump-'))
     permissions:
       actions: read
       checks: read
@@ -35,13 +46,52 @@ jobs:
         id: git_setup
         uses: Homebrew/actions/git-user-config@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
 
+      # A manual run carries the number as an input; a workflow_run carries the
+      # triggering run's payload instead. Pinning head_sha to the commit CI
+      # actually tested means a push racing the run publishes nothing.
+      - name: Resolve the pull request
+        id: target
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_PULL_REQUEST: ${{ inputs.pull_request }}
+          INPUT_HEAD_SHA: ${{ inputs.head_sha }}
+          RUN_PULL_REQUESTS: ${{ toJSON(github.event.workflow_run.pull_requests) }}
+          RUN_HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          RUN_HEAD_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [[ "$EVENT_NAME" == "workflow_dispatch" ]]
+          then
+            number="$INPUT_PULL_REQUEST"
+            head_sha="$INPUT_HEAD_SHA"
+          else
+            number="$(jq -r 'first(.[].number) // empty' <<<"$RUN_PULL_REQUESTS")"
+            # The payload omits pull_requests in some cases; the branch is enough
+            # to find it, and it is ours because --no-fork never leaves the repo.
+            if [[ -z "$number" ]]
+            then
+              number="$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$RUN_HEAD_BRANCH" \
+                          --state open --json number --jq 'first(.[].number) // empty')"
+            fi
+            head_sha="$RUN_HEAD_SHA"
+          fi
+
+          if [[ -z "$number" ]]
+          then
+            echo "No open pull request found for ${RUN_HEAD_BRANCH:-the given input}." >&2
+            exit 1
+          fi
+
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
+
       - name: Pull bottles
         env:
           HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
           HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
-          HEAD_SHA: ${{ inputs.head_sha }}
-          PULL_REQUEST: ${{ inputs.pull_request }}
+          HEAD_SHA: ${{ steps.target.outputs.head_sha }}
+          PULL_REQUEST: ${{ steps.target.outputs.number }}
         run: |
           if [[ -n "$HEAD_SHA" ]]
           then

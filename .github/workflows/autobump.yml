@@ -32,9 +32,13 @@ jobs:
         id: git_setup
         uses: Homebrew/actions/git-user-config@3cdb78d0f62ad29dd32de765782654f4eedea607 # 2026.08.31.1
 
+      # A PAT, not GITHUB_TOKEN: GitHub does not trigger workflows from events
+      # created with the built-in token, so a bump PR opened with it would never
+      # run `tests.yml`, never build a bottle, and leave `publish.yml` with
+      # nothing to pull.
       - name: Bump formulae
         env:
-          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_GITHUB_API_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
           HOMEBREW_GIT_COMMITTER_NAME: ${{ steps.git_setup.outputs.name }}
           HOMEBREW_GIT_COMMITTER_EMAIL: ${{ steps.git_setup.outputs.email }}
           TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
