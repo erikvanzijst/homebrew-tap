@@ -3,8 +3,8 @@ class Freepod < Formula
 
   desc "Take a local project directory to a running deployment on freepod.eu"
   homepage "https://pypi.org/project/freepod/"
-  url "https://files.pythonhosted.org/packages/67/83/4978ce1320af69e4ce93987ca09bcb8a2b15994ec959813ecc400f178c98/freepod-0.13.3.tar.gz"
-  sha256 "ebe6af86eb02917a6965576feee3425d61e27ff0e4004b5be6433758f496fd4e"
+  url "https://files.pythonhosted.org/packages/48/f4/a1701c3af381e882747aa2217babcb0ff2e6f22f8e42f2de4fb68dc47d75/freepod-0.14.0.tar.gz"
+  sha256 "317482d44b002bb4c967e1ccf186a1725ada9d34126234a457adb3b51e7eb682"
   license "MIT"
 
   bottle do
@@ -46,8 +46,8 @@ class Freepod < Formula
   end
 
   resource "idna" do
-    url "https://files.pythonhosted.org/packages/5f/f7/abb373e5757eaec4b922b92f97ec8d6d7e057cf06778247604fbc4e7c3f3/idna-3.19.tar.gz"
-    sha256 "5e0811a4383b21dc5838069f801c4fb62113b7447663d2530d2bd6e77b49bf15"
+    url "https://files.pythonhosted.org/packages/f5/08/8eea9d4b8302028f3abb2c0813953f7aec26d33b7a8960ed760e65ff29fa/idna-3.20.tar.gz"
+    sha256 "a7db850025b95ded1eae8a46181a1a6c56c92c96f0e2b005d9ff8dc0210cab44"
   end
 
   resource "pathspec" do
