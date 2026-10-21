@@ -3,8 +3,8 @@ class Freepod < Formula
 
   desc "Take a local project directory to a running deployment on freepod.eu"
   homepage "https://pypi.org/project/freepod/"
-  url "https://files.pythonhosted.org/packages/9a/54/9aba0f8599eb6b8b5638df62da39e17edfba5f2728a959b82c18b8bf4f1f/freepod-0.21.2.tar.gz"
-  sha256 "f8988c103f35a47c5415e13b6e424ede4f8a15e8936eddf82f46fa4230244180"
+  url "https://files.pythonhosted.org/packages/40/cc/a1fc505e6a86d231fee7827ea01082d47e83e7ca722069dbb701b6f9e625/freepod-0.22.0.tar.gz"
+  sha256 "6905f87ee4f92b7632023525c5c9304ed943eaaa259c989b458398ac0e3699b1"
   license "MIT"
 
   bottle do
@@ -21,8 +21,8 @@ class Freepod < Formula
   end
 
   resource "certifi" do
-    url "https://files.pythonhosted.org/packages/7e/eb/a2aa1ac3ea30dd3f30ca57f40232138b6b0040719316ecb85daf61167771/certifi-2026.10.18.tar.gz"
-    sha256 "b9995d97b64d0431a5af837d8ca8cd6238104d1f319f04bd93ea43124d6c861e"
+    url "https://files.pythonhosted.org/packages/a6/bd/1436c50cc46699de0230fbaacc1d1de7bfec413176099949e9d5112e88f2/certifi-2026.10.19.tar.gz"
+    sha256 "035c1e85572b141bf1c3a3eff0e33a8eb74917522f2559075ff8d2fea780a1ae"
   end
 
   resource "click" do
