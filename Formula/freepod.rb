@@ -3,8 +3,8 @@ class Freepod < Formula
 
   desc "Take a local project directory to a running deployment on freepod.eu"
   homepage "https://pypi.org/project/freepod/"
-  url "https://files.pythonhosted.org/packages/7d/cd/1a68466cd90a54b11451e11827fe37044c5503c50b2e6bcb89e8f2b6d018/freepod-0.23.0.tar.gz"
-  sha256 "d968fa6a5ab4fa163e7f9baf6bc88546a51948cba83ed6d734ce496d718627ab"
+  url "https://files.pythonhosted.org/packages/31/55/2ee7173f9cc231450f79fb04737bad3255113625988ea1dcc1569548e087/freepod-0.24.0.tar.gz"
+  sha256 "3b09d83a5172af29680022f40c79c560ee13ab4d20deee77ee5d69ad5f73e5f7"
   license "MIT"
 
   bottle do
@@ -16,8 +16,8 @@ class Freepod < Formula
   depends_on "python@3.14"
 
   resource "anyio" do
-    url "https://files.pythonhosted.org/packages/a9/d2/f4d173e22df740bc37b1db102b386ba719b66e95b0f0d751f556b387e6d2/anyio-4.15.1.tar.gz"
-    sha256 "9f28306018cbd6d329e64a36d58256edff76dd996fe423bc957326e578b82a94"
+    url "https://files.pythonhosted.org/packages/a1/98/7e457a3b014976887a050561955c0b76e1e7e2d6e27b78ecef2ef80518f2/anyio-4.16.0.tar.gz"
+    sha256 "59bb03251907983d1603d27c3087ddb1e93299ea2163adcdba37899a4fb12ffb"
   end
 
   resource "certifi" do
