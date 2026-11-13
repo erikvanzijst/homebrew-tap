@@ -8,9 +8,9 @@ class Freepod < Formula
   license "MIT"
 
   bottle do
-    root_url "https://github.com/erikvanzijst/homebrew-tap/releases/download/freepod-0.25.0"
-    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "1aa47d78950850db57ccd3bbd1716f00171d405bdd3089177e79d65ea76083e9"
-    sha256 cellar: :any_skip_relocation, x86_64_linux: "f799b787fe0d71d557cc77c3162eb599dd3b15b4559cd0529601d190f2a5ef6b"
+    root_url "https://github.com/erikvanzijst/homebrew-tap/releases/download/freepod-0.25.1"
+    sha256 cellar: :any_skip_relocation, arm64_tahoe:  "da5cab87162c6c0caface5fd47413697017966b4dc7e80f65b504cc267cb9e23"
+    sha256 cellar: :any_skip_relocation, x86_64_linux: "7c50e6e4b069a1a2370c02ec6109a1f00c0f5adf0e833b05ff7c6e3df43a1362"
   end
 
   depends_on "python@3.14"
