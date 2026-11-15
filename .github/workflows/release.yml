@@ -1,0 +1,73 @@
+name: brew release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: freepod version just published to PyPI
+        required: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash -xeuo pipefail {0}
+
+concurrency:
+  group: release-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@f8d4222eb633e65c2a0157383cf80861fc7fae7f # 2026.09.07.1
+        with:
+          core: true
+
+      - name: Set up git
+        uses: Homebrew/actions/git-user-config@f8d4222eb633e65c2a0157383cf80861fc7fae7f # 2026.09.07.1
+
+      - name: Point the formula at the release
+        env:
+          VERSION: ${{ inputs.version }}
+          TAP_NAME: ${{ steps.set-up-homebrew.outputs.tap-name }}
+        run: |
+          [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]]
+
+          for _ in $(seq 30)
+          do
+            sdist="$(curl -fsS "https://pypi.org/pypi/freepod/$VERSION/json" |
+                       jq -r '.urls[] | select(.packagetype == "sdist") | "\(.url) \(.digests.sha256)"')" && break
+            sleep 10
+          done
+          read -r url sha256 <<<"$sdist"
+          [[ -n "$sha256" ]]
+
+          sed -i -E \
+            -e "s|^  url \".*\"$|  url \"$url\"|" \
+            -e "s|^  sha256 \".*\"$|  sha256 \"$sha256\"|" \
+            Formula/freepod.rb
+          git diff --exit-code --quiet Formula/freepod.rb && { echo "Formula already at $VERSION" >&2; exit 1; }
+
+          # `brew bump` and `bump-formula-pr` both resolve the main package
+          # through the one-day release cooldown, so a fresh release is invisible
+          # to them. This flag lifts it for freepod alone; dependencies stay cooled.
+          brew update-python-resources --install-dependencies --ignore-main-package-cooldown "$TAP_NAME/freepod"
+          brew style "$TAP_NAME/freepod"
+
+      - name: Open the bump pull request
+        env:
+          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          VERSION: ${{ inputs.version }}
+        run: |
+          branch="bump-freepod-$VERSION"
+          git checkout -b "$branch"
+          git commit -m "freepod $VERSION" -- Formula/freepod.rb
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" "HEAD:refs/heads/$branch"
+          gh pr create --repo "$GITHUB_REPOSITORY" --base main --head "$branch" \
+            --title "freepod $VERSION" --body "Published right after PyPI by \`brew release\`."
