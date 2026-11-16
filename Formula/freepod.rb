@@ -3,8 +3,8 @@ class Freepod < Formula
 
   desc "Take a local project directory to a running deployment on freepod.eu"
   homepage "https://pypi.org/project/freepod/"
-  url "https://files.pythonhosted.org/packages/45/79/e568d4848033c12d980b536dfdc16c95f1d5f3cfe2050d217f5c1390e475/freepod-0.25.2.tar.gz"
-  sha256 "1d338104abb3e4a66524a7100c9246329500ffbba0af58292de3df0508fba04c"
+  url "https://files.pythonhosted.org/packages/3c/de/9118818ceab0e4816b39431da0eef7cbf5ba37c703f3e8129f7026bf57a9/freepod-0.26.0.tar.gz"
+  sha256 "118727f90453a8da6146ae9ea3c1417b6e67477579b5320c87ed0cebe834cf67"
   license "MIT"
 
   bottle do
@@ -55,9 +55,19 @@ class Freepod < Formula
     sha256 "17db5ecd524104a120e173814c90367a96a98d07c45b2e10c2f3919fff91bf5a"
   end
 
+  resource "prompt-toolkit" do
+    url "https://files.pythonhosted.org/packages/7d/ea/39b988c938f75cb75d7045b5c69f8bfed47ee2152c8837fb403de29d6fb8/prompt_toolkit-3.0.53.tar.gz"
+    sha256 "9ec8a0ad96d5c56148b3f914aa79c1564c3fde5d2e6b876e7bc327e353cf8fa6"
+  end
+
   resource "typing-extensions" do
     url "https://files.pythonhosted.org/packages/f6/cc/6253133b5bb138fc3306cebfbda2c520f545d36b5be2c7255cc528bb45d6/typing_extensions-4.16.0.tar.gz"
     sha256 "dc983d19a509c94dba722ee6abd33940f7c05a89e243c47e907eb4db6f1a43e5"
+  end
+
+  resource "wcwidth" do
+    url "https://files.pythonhosted.org/packages/ea/01/e5ac23733628a6bbb91913a765fcf55ee8070d8d991bc88fdaaf805052c7/wcwidth-0.9.4.tar.gz"
+    sha256 "fd8d57d3cdfe570e3265c8fab1885c24e34ef40889c0759c0c304a19e9835954"
   end
 
   def install
