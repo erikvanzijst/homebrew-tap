@@ -3,8 +3,8 @@ class Freepod < Formula
 
   desc "Take a local project directory to a running deployment on freepod.eu"
   homepage "https://pypi.org/project/freepod/"
-  url "https://files.pythonhosted.org/packages/8a/09/d2950bb0360a7a5fb75c1f4c6a15121d1eb4e55a3f7e1f7576b709537574/freepod-0.28.0.tar.gz"
-  sha256 "e56a57ed3cefd46e542b12f2fb8e70393cd563dd46aadd04310b564e12ee9fdf"
+  url "https://files.pythonhosted.org/packages/a1/ac/ec202e315d082a9f5dfa2de6014843471b54eddf44473c2b077304fad1e8/freepod-0.29.0.tar.gz"
+  sha256 "b6f7d573cc84c6d99e8a890cb4a6b31312d20e9acabb18b145f31a6d4ffdd5fa"
   license "MIT"
 
   bottle do
